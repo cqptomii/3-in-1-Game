@@ -1,0 +1,118 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
+public class ball_script : MonoBehaviour
+{
+    /*
+    *
+    *   ATTRIBUTE
+    *
+    */
+    public Gm_script ref_master; // reference to master script
+    public TextMeshPro score_text; // reference to Score Text Box
+    public AudioClip[] clip_array; // Sound Array
+
+    protected Vector3 force = new Vector3(0f,-6f,0f); // Force appliquer initialement à la balle
+    protected Rigidbody2D rb; 
+    protected AudioSource Sound_source; // Ball Audiosource
+    protected int score = 0; // Player Score
+    protected Vector3 init_pos; // inital position of the ball
+    /*
+    *
+    *
+    *
+    */
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        init_pos = transform.position;
+        Sound_source = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody2D>();
+        Sound_source.loop = false;
+        Sound_source.volume = 0.7f;
+
+        if (rb){
+            rb.velocity = force;
+        }
+        else{
+            Debug.LogError("No Rigidbody attached to the object.");
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+            // Player don't catch the ball
+        if(transform.position.y < -5 && !ref_master.IsDead()){
+            Sound_source.clip = clip_array[3];
+            Sound_source.Play();
+                //Update Score
+            score -= 500;
+            score_text.SetText("Score : " + score);
+                //update health
+            ref_master.decrease_heath();
+
+            // Reset ball at it initial position
+            transform.position = init_pos;
+            resetVelocity();
+            StartCoroutine(PauseCoroutine(2));
+            rb.velocity = force;
+        }
+    }
+    void OnCollisionEnter2D(Collision2D other){
+        if(other.gameObject.tag == "box"){
+            score += 50;
+            score_text.SetText("Score : " + score);
+            Sound_source.clip = clip_array[0];
+            Sound_source.Play();
+            ref_master.Report_brickDeath();
+        }
+        if(other.gameObject.tag == "wall"){
+            Sound_source.clip = clip_array[1];
+            Sound_source.Play();
+        }
+        if(other.gameObject.tag == "pad"){
+            float diffX = other.transform.position.x - transform.position.x;
+            rb.velocity += new Vector2(diffX*3,0.1f);
+            Sound_source.clip = clip_array[2];
+            Sound_source.Play();
+        }
+    }
+    //Method that score point in case of coins catch
+    public void ScoreCoin(){
+        score += 500;
+        score_text.SetText("Score:"+ score);
+    }
+    //Method to provide current Score to
+    public int getScore(){
+        return score;
+    }
+    public void resetVelocity(){
+        rb.velocity = new Vector2(0,0);
+    }
+    public void UpVelocity(){
+        rb.velocity += new Vector2(ref_master.getTime()/60,ref_master.getTime()/60);
+    }
+    private IEnumerator PauseCoroutine(float seconds)
+    {
+        // Initial state
+        float originalTimeScale = Time.timeScale;
+
+        // Pause
+        Time.timeScale = 0f;
+
+        // Waite the amount of second
+        float pauseEndTime = Time.realtimeSinceStartup + seconds;
+        while (Time.realtimeSinceStartup < pauseEndTime)
+        {
+            yield return null;
+        }
+
+        // Unpause
+        Time.timeScale = originalTimeScale;
+    }
+}
