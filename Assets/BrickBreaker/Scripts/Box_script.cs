@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
-using UnityEditor.AnimatedValues;
 
 public class Box_script : MonoBehaviour
 {
@@ -12,7 +8,7 @@ public class Box_script : MonoBehaviour
     *
     */
     public GameObject coin_prefab; // reference to coin prefab
-    public GameObject speedBonus_prefab;
+    public GameObject speedBonus_prefab; // reference to speedBonus prefab
     /*
     *
     *
@@ -31,7 +27,10 @@ public class Box_script : MonoBehaviour
         
     }
 
-    // Method to manage collisions between the ball and our boxes
+    /// <summary>
+    ///     Method to manage collisions when a ball hit our boxes
+    /// </summary>
+    /// <param name="other"> Collision information of the object</param>
     void OnCollisionEnter2D(Collision2D other){
         if(other.gameObject.tag == "ball"){
             Vector3 box_pos = gameObject.transform.position;

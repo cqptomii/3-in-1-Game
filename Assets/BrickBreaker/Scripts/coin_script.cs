@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
-using UnityEditor.AnimatedValues;
+
 public class coin_script : MonoBehaviour
 {
     /*
@@ -28,10 +25,10 @@ public class coin_script : MonoBehaviour
        } 
     }
 
-    /*
-    * Method to destroy coins gameobject when it collide with our pad
-    * Collisions with box / ball are disable with Collisions layer
-    */
+    /// <summary>
+    ///     Method to destroy coins gameobject when it collide with our pad
+    ///     Collisions with box / ball are disable with Collisions layer
+    /// </summary>
     void OnCollisionEnter2D(Collision2D other){
         if(other.gameObject.tag == "pad"){
             Destroy(gameObject);

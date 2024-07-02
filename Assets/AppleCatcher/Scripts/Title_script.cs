@@ -16,7 +16,10 @@ public class Title_script : MonoBehaviour
             StartCoroutine(LoadScene_Game());
         }
     }
-    // Couroutine to load Game from the menu
+    /// <summary>
+    ///     Couroutine to load Game from the menu
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoadScene_Game(){
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("AppleGame");
         while( !asyncLoad.isDone){

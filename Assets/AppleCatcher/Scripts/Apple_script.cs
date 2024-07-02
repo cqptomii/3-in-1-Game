@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class Apple_script : MonoBehaviour
@@ -17,7 +14,10 @@ public class Apple_script : MonoBehaviour
         if(transform.position.y < -10 )
             Destroy(gameObject);
     }
-    // method to manage Collision between apple projectile and Player
+    /// <summary>
+    ///     method to manage Collision between apple projectile and Player
+    /// </summary>
+    /// <param name="other"> Collisions details of the object </param>
     public void OnCollisionEnter2D(Collision2D other){
         if(other.gameObject.tag == "panier"){
             Destroy(gameObject);

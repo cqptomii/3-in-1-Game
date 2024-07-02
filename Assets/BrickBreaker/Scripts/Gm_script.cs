@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 public class Gm_script : MonoBehaviour
 {
     /*
@@ -11,13 +8,14 @@ public class Gm_script : MonoBehaviour
     *
     */
 
-    // Variable that store differents wall positions
+    // Variable that store differents wall positions on the playable area
     public GameObject Left_border;
     public GameObject right_border;
     public GameObject top_border;
 
     public GameObject brick_prefab; // reference to a brick prefab
     public ball_script ball; // reference to our ball script
+    public  Paddle_script ref_paddle; //reference to our paddle script
     public GameObject[] Spritelife; // references to health sprites
     public GameOVER ref_gameover; // reference to the gameover Screen
 
@@ -29,6 +27,7 @@ public class Gm_script : MonoBehaviour
     protected float x_max;
     protected float x_min;
     protected float y_max;
+
     protected int time_from_start = 0;
     /*
     *
@@ -41,12 +40,16 @@ public class Gm_script : MonoBehaviour
     {
         Renderer Topborder_Renderer = top_border.GetComponent<Renderer>();
         Renderer Edgeborder_Renderer = Left_border.GetComponent<Renderer>();
+        
+        // Get the extremum of the playable area
         y_max =top_border.transform.position.y - Topborder_Renderer.bounds.size.y;
         x_min = Left_border.transform.position.x + Edgeborder_Renderer.bounds.size.x/2;
         x_max = right_border.transform.position.x - Edgeborder_Renderer.bounds.size.x/2;
 
         prefabRenderer = brick_prefab.GetComponent<Renderer>();
         LoadGameBoard(prefabRenderer,x_max,x_min,y_max);
+        
+        // Start Timer for increase game Difficulty
         StartCoroutine(StartTimer());
     }
 
@@ -59,11 +62,22 @@ public class Gm_script : MonoBehaviour
         }
         // Load a new Level
         if(brick_amount <= 0){
+            // Reset ball at it initial position
+            Set_PaddlePos(ball.GetInitPosition());
+            ball.resetVelocity();
+            StartCoroutine(PauseCoroutine(2)); // Wait 2 seconds
+            ball.Set_velocity(new Vector3(0f,-6f,0f));
             LoadGameBoard(prefabRenderer,x_max,x_min,y_max);
         }
     }
 
-    // Method that fill the screen with 3 line of bricks
+    /// <summary>
+    ///     Method that fill the screen with 3 line of bricks
+    /// </summary>
+    /// <param name="prefab_size"> Size of the prefab</param>
+    /// <param name="x_max"> x position of the right border</param>
+    /// <param name="x_min"> x position of the left border</param>
+    /// <param name="y_max"> y position of the top border</param>
     void FullGameBoard(Vector3 prefab_size,float x_max, float x_min, float y_max){
         Vector3 spawnPoint = new Vector3(x_min+ prefab_size.x/2,y_max - prefab_size.y/2,-0.01f);
         for(int i = 0;i < 3;i++){
@@ -77,7 +91,14 @@ public class Gm_script : MonoBehaviour
         }
     }
 
-    //Method that fill randomly the screen with bricks
+    /// <summary>
+    ///     Method that fill randomly the screen with bricks
+    ///     Fill an random ammount of column and a random amount of line with boxes prefab
+    /// </summary>
+    /// <param name="prefab_size"> Size of the prefab</param>
+    /// <param name="x_max"> x position of the right border</param>
+    /// <param name="x_min"> x position of the left border</param>
+    /// <param name="y_max"> y position of the top border</param>
     void RandomGameBoard(Vector3 prefab_size,float x_max, float x_min, float y_max){
         int columnAmount =  UnityEngine.Random.Range(4,6);
         Vector3 spawnPoint = new Vector3(x_min+ prefab_size.x/2,y_max - prefab_size.y/2,-0.01f);
@@ -101,11 +122,21 @@ public class Gm_script : MonoBehaviour
             spawnPoint.x = x_min + prefab_size.x/2;
         }
     }
+
+    /// <summary>
+    ///     Method to decrease current brick on the screen
+    /// </summary>
     public void Report_brickDeath(){
         brick_amount --;
     }
 
-    //Method that reload a Level of bricks
+    /// <summary>
+    ///     Method that reload a Level of bricks
+    /// </summary>
+    /// <param name="prefab_size"> Size of the prefab</param>
+    /// <param name="x_max"> x position of the right border</param>
+    /// <param name="x_min"> x position of the left border</param>
+    /// <param name="y_max"> y position of the top border</param>
     void LoadGameBoard(Renderer prefabRenderer,float x_max, float x_min, float y_max){
         int prefab_choice = UnityEngine.Random.Range(0,1);
     
@@ -116,18 +147,27 @@ public class Gm_script : MonoBehaviour
         }
     }
 
-    //Method which decrease player health and hide associated sprite
+    /// <summary>
+    ///     Method which decrease player health and hide associated sprite
+    /// </summary>
     public void decrease_heath(){
         life_left--;
         Renderer ob_renderer = Spritelife[life_left].GetComponent<Renderer>();
         ob_renderer.enabled = false;
     }
     
-    // Method which return time attribute
+    /// <summary>
+    ///     Method which return time attribute
+    /// </summary>
+    /// <returns> time last since the game start</returns>
     public int getTime(){
         return time_from_start;
     }
-    //Method that look if we have life left
+
+    /// <summary>
+    ///     Method that look if we have life left
+    /// </summary>
+    /// <returns> true : life left <= 0 / false otherwise </returns>
     public bool IsDead(){
         if(life_left >0){
             return false;
@@ -135,7 +175,25 @@ public class Gm_script : MonoBehaviour
             return true;
         }
     }
-    // Coroutine that init a Timer which will set the speed of the ball
+
+    /// <summary>
+    ///     Method to set the position of the paddle
+    /// </summary>
+    /// <param name="pos"> position Vector </param>
+    public void Set_PaddlePos(Vector3 pos){
+        ref_paddle.Set_Pos(pos);
+    }
+
+    /*
+    *
+    *   Coroutine 
+    *
+    */
+
+    /// <summary>
+    ///     Coroutine that init a Timer which will set the speed of the ball
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator StartTimer()
     {
 
@@ -143,8 +201,33 @@ public class Gm_script : MonoBehaviour
             yield return new WaitForSeconds(1f);
             if(time_from_start %10 == 0){
                 ball.UpVelocity();
+                ref_paddle.Increase_speed();
             }
             time_from_start++;
         }
+    }
+
+    /// <summary>
+    ///     Make a pause in the game - use when the player don't catch the ball
+    /// </summary>
+    /// <param name="seconds"> amount of seconds paused</param>
+    /// <returns></returns>
+    private IEnumerator PauseCoroutine(float seconds)
+    {
+        // Initial state
+        float originalTimeScale = Time.timeScale;
+
+        // Pause
+        Time.timeScale = 0f;
+
+        // Waite the amount of second
+        float pauseEndTime = Time.realtimeSinceStartup + seconds;
+        while (Time.realtimeSinceStartup < pauseEndTime)
+        {
+            yield return null;
+        }
+
+        // Unpause
+        Time.timeScale = originalTimeScale;
     }
 }
