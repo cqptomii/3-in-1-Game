@@ -16,7 +16,7 @@ Enfin la partie la plus `importante` de ce projet a été l'implementation du je
 
 ## Menu 
 
-![alt text]()
+![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/Menu.png)
 
 Comme ce projet nécéssité de regrouper trois jeux différents, nous avons créer un menu afin dans naviguer facilement et efficacement entre les différents jeux.
 
@@ -27,7 +27,7 @@ Comme ce projet nécéssité de regrouper trois jeux différents, nous avons cr�
   
 ## Apple Catcher
 
-![alt text]()
+![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/ScreenAC.png)
 
 Apple Catcher est le premier jeu sur lequel nous avons travaillés. Il consiste simplement à récuperer le plus de pomme possible dans un intervalle de temps donné.
   - implémentation d'un personnage 2D deplacable.
@@ -40,14 +40,17 @@ Apple Catcher est le premier jeu sur lequel nous avons travaillés. Il consiste 
 
 Plusieurs améliorations ont été implémenter sur ce jeu, principalement sur la notion de difficulté de celui-ci.
 - trois nouveaux type de pommes ont été introduites avec des effets particuliers
-     ![alt text]() - Pomme doré : Donne 5 points au lieu d'un seul 
-     ![alt text]() - Pomme zombie : Fais perdre un point au joueur
-     ![alt text]() - Bombe : Finis la partie si le joueur l'attrape
+
+     ![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/Gold.png) - Pomme doré : Donne 5 points au lieu d'un seul 
+
+   ![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/Rotten.png) - Pomme zombie : Fais perdre un point au joueur
+
+    ![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/Bomb.png) - Bombe : Finis la partie si le joueur l'attrape
 - Modulation du niveau de pomme instanciés en fonction du temps écoulé
 
 ## Brick Breaker
 
-![alt text]()
+![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/ScreenBB.png)
 
 Brick Breaker est le second jeu sur lequel nous avons travaillés, qui reproduit le jeu éponyme Brick Breaker.
   - instanciation aléatoire de préfab
@@ -64,7 +67,7 @@ Comme pour Apple catcher l'essentiels des améliorations ont été apportées su
  
 ## Mini-UFO
 
-![alt text]()
+![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/ScreenMU.png)
 
 Mini UFO est le corps de notre projet, car il réprésente l'application de ce qu'on a pu apprendre durant ce semestre et plus encore. Ce jeu s'inspire du jeu R-Type et met en scene un personnage dans l'espace combattant des vaisseau ennemies.
 Le but du jeu est essentiellement d'obtenir le plus de points possible, pouvant être obtenu en détruisant des vaisseaux ennemies.
@@ -110,9 +113,9 @@ Ce jeu a été celui dans lequel nous avons ajouté le plus de nouvelle mécaniq
     ![alt text]()
   - Animations et ajout de sons lors de la destruction des vaisseaux ennmies
   - Design du Menu de pause
-    ![alt text]()
+    ![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/PauseScreen.png)
   - Wiki afin de connaitre les différentes spécificité du jeux (accesible en jeux)
-    ![alt text]()
+    ![alt text](https://github.com/cqptomii/3-in-1-Game/blob/master/Pic/Wiki.png)
   - Différentes animations sur l'envoie de projectiles
     
 - Difficulté
